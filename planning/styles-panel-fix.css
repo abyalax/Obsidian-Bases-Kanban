@@ -89,7 +89,9 @@
 	cursor: pointer;
 	font-size: 16px;
 	color: var(--text-muted);
-	transition: background 120ms ease, color 120ms ease;
+	transition:
+		background 120ms ease,
+		color 120ms ease;
 }
 
 .obk-card-detail-btn:hover,

@@ -4,12 +4,7 @@ import type { App, TFile } from 'obsidian';
  * Updates a single frontmatter property in a file.
  * Uses processFrontMatter — same pattern as handleCardDrop in kanbanView.ts.
  */
-export async function updateFrontmatterProp(
-	app: App,
-	file: TFile,
-	key: string,
-	value: unknown,
-): Promise<void> {
+export async function updateFrontmatterProp(app: App, file: TFile, key: string, value: unknown): Promise<void> {
 	await app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 		if (value === '' || value === null || value === undefined) {
 			delete fm[key];
