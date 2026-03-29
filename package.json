@@ -9,14 +9,16 @@
 	},
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production && node copy-to-obsidian.js",
 		"typecheck": "tsc -noEmit -skipLibCheck",
 		"test": "NODE_NO_WARNINGS=1 tsx --tsconfig tsconfig.test.json --test",
 		"prepare": "git config core.hooksPath .githooks",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "biome format --write .",
-		"format:check": "biome format --diagnostic-level=error ."
+		"format:check": "biome format --diagnostic-level=error .",
+		"copy": "node copy-to-obsidian.js",
+		"dev:copy": "pnpm run dev && pnpm run copy"
 	},
 	"keywords": [
 		"obsidian",

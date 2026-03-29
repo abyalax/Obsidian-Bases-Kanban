@@ -17,42 +17,42 @@ Adds a kanban layout to [Obsidian Bases](https://help.obsidian.md/bases) so you 
 ## Environment & tooling
 
 - Node.js: version is managed via [nvm](https://github.com/nvm-sh/nvm); run `nvm use` to activate the version specified in `.nvmrc`.
-- **Package manager: npm** (required for this sample - `package.json` defines npm scripts and dependencies).
+- **Package manager: pnpm** (required for this sample - `package.json` defines pnpm scripts and dependencies).
 - **Bundler: esbuild** (required for this sample - `esbuild.config.mjs` and build scripts depend on it). Alternative bundlers like Rollup or webpack are acceptable for other projects if they bundle all external dependencies into `main.js`.
 - Types: `obsidian` type definitions.
 
-**Note**: This sample project has specific technical dependencies on npm and esbuild. If you're creating a plugin from scratch, you can choose different tools, but you'll need to replace the build configuration accordingly.
+**Note**: This sample project has specific technical dependencies on pnpm and esbuild. If you're creating a plugin from scratch, you can choose different tools, but you'll need to replace the build configuration accordingly.
 
 ### Install
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Dev (watch)
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ### Production build
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Linting and formatting
 
 ESLint handles linting; [Biome](https://biomejs.dev/) handles formatting. They are intentionally kept separate. Both are devDependencies — no global installs needed.
 
-| Script | Purpose |
-|---|---|
-| `npm run lint` | Report ESLint rule violations |
-| `npm run lint:fix` | Auto-fix ESLint violations |
-| `npm run format` | Rewrite files with Biome |
-| `npm run format:check` | Exit non-zero if any file is unformatted (used by CI and pre-commit hook) |
+| Script                  | Purpose                                                                   |
+| ----------------------- | ------------------------------------------------------------------------- |
+| `pnpm run lint`         | Report ESLint rule violations                                             |
+| `pnpm run lint:fix`     | Auto-fix ESLint violations                                                |
+| `pnpm run format`       | Rewrite files with Biome                                                  |
+| `pnpm run format:check` | Exit non-zero if any file is unformatted (used by CI and pre-commit hook) |
 
-A pre-commit hook (`.githooks/pre-commit`) runs `format:check` then `lint` automatically after `npm install` via the `prepare` script.
+A pre-commit hook (`.githooks/pre-commit`) runs `format:check` then `lint` automatically after `pnpm install` via the `prepare` script.
 
 ## File & folder conventions
 
@@ -74,13 +74,13 @@ A pre-commit hook (`.githooks/pre-commit`) runs `format:check` then `lint` autom
 
 ## Manifest rules (`manifest.json`)
 
-- Must include (non-exhaustive):  
-  - `id` (plugin ID; for local dev it should match the folder name)  
-  - `name`  
-  - `version` (Semantic Versioning `x.y.z`)  
-  - `minAppVersion`  
-  - `description`  
-  - `isDesktopOnly` (boolean)  
+- Must include (non-exhaustive):
+  - `id` (plugin ID; for local dev it should match the folder name)
+  - `name`
+  - `version` (Semantic Versioning `x.y.z`)
+  - `minAppVersion`
+  - `description`
+  - `isDesktopOnly` (boolean)
   - Optional: `author`, `authorUrl`, `fundingUrl` (string or map)
 - Never change `id` after release. Treat it as stable API.
 - Keep `minAppVersion` accurate when using newer APIs.
@@ -155,12 +155,14 @@ Follow Obsidian's **Developer Policies** and **Plugin Guidelines**. In particula
 ## Agent do/don't
 
 **Do**
+
 - Add commands with stable IDs (don't rename once released).
 - Provide defaults and validation in settings.
 - Write idempotent code paths so reload/unload doesn't leak listeners or intervals.
 - Use `this.register*` helpers for everything that needs cleanup.
 
 **Don't**
+
 - Introduce network calls without an obvious user-facing reason and documentation.
 - Ship features that require cloud services without clear disclosure and explicit opt-in.
 - Store or transmit vault contents unless essential and consented.
@@ -170,6 +172,7 @@ Follow Obsidian's **Developer Policies** and **Plugin Guidelines**. In particula
 ### Organize code across multiple files
 
 **main.ts** (minimal, lifecycle only):
+
 ```ts
 import { Plugin } from "obsidian";
 import { MySettings, DEFAULT_SETTINGS } from "./settings";
@@ -186,6 +189,7 @@ export default class MyPlugin extends Plugin {
 ```
 
 **settings.ts**:
+
 ```ts
 export interface MySettings {
   enabled: boolean;
@@ -199,6 +203,7 @@ export const DEFAULT_SETTINGS: MySettings = {
 ```
 
 **commands/index.ts**:
+
 ```ts
 import { Plugin } from "obsidian";
 import { doSomething } from "./my-command";
@@ -237,15 +242,25 @@ async onload() {
 ### Register listeners safely
 
 ```ts
-this.registerEvent(this.app.workspace.on("file-open", f => { /* ... */ }));
-this.registerDomEvent(window, "resize", () => { /* ... */ });
-this.registerInterval(window.setInterval(() => { /* ... */ }, 1000));
+this.registerEvent(
+  this.app.workspace.on("file-open", (f) => {
+    /* ... */
+  }),
+);
+this.registerDomEvent(window, "resize", () => {
+  /* ... */
+});
+this.registerInterval(
+  window.setInterval(() => {
+    /* ... */
+  }, 1000),
+);
 ```
 
 ## Troubleshooting
 
-- Plugin doesn't load after build: ensure `main.js` and `manifest.json` are at the top level of the plugin folder under `<Vault>/.obsidian/plugins/<plugin-id>/`. 
-- Build issues: if `main.js` is missing, run `npm run build` or `npm run dev` to compile your TypeScript source code.
+- Plugin doesn't load after build: ensure `main.js` and `manifest.json` are at the top level of the plugin folder under `<Vault>/.obsidian/plugins/<plugin-id>/`.
+- Build issues: if `main.js` is missing, run `pnpm run build` or `pnpm run dev` to compile your TypeScript source code.
 - Commands not appearing: verify `addCommand` runs after `onload` and IDs are unique.
 - Settings not persisting: ensure `loadData`/`saveData` are awaited and you re-render the UI after changes.
 - Mobile-only issues: confirm you're not using desktop-only APIs; check `isDesktopOnly` and adjust.

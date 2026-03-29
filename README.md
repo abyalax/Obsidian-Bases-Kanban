@@ -32,19 +32,22 @@ A kanban-style drag-and-drop custom view for Obsidian Bases that allows you to o
 ### Development Installation
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/xiwcx/obsidian-bases-kanban-custom-view.git
    cd obsidian-bases-kanban-custom-view
    ```
 
 2. Install dependencies:
+
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Build the plugin:
+
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 4. Link or copy the plugin folder to your vault's `.obsidian/plugins/` directory
@@ -62,6 +65,7 @@ A kanban-style drag-and-drop custom view for Obsidian Bases that allows you to o
 ### Example
 
 If your base has a "Status" property with values "To Do", "Doing", and "Done":
+
 - Select "Status" in the "Group by" dropdown
 - Three columns will appear: "To Do", "Doing", and "Done" (plus an "Uncategorized" column for notes without a status)
 - Drag cards between columns to change their status
@@ -73,18 +77,18 @@ If your base has a "Status" property with values "To Do", "Doing", and "Done":
 ### Prerequisites
 
 - Node.js (v24)
-- npm
+- pnpm
 
 ### Building
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ### Development Mode
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 This will watch for changes and rebuild automatically.
@@ -92,13 +96,13 @@ This will watch for changes and rebuild automatically.
 ### Testing
 
 ```bash
-npm test
+pnpm test
 ```
 
 ### Type Checking
 
 ```bash
-npm run typecheck
+pnpm run typecheck
 ```
 
 ### Linting and Formatting
@@ -106,23 +110,27 @@ npm run typecheck
 This project uses [ESLint](https://eslint.org/) for linting and [Biome](https://biomejs.dev/) for formatting. They are intentionally kept separate.
 
 **Lint** (reports rule violations):
+
 ```bash
-npm run lint
+pnpm run lint
 ```
 
 **Lint with auto-fix**:
+
 ```bash
-npm run lint:fix
+pnpm run lint:fix
 ```
 
 **Format** (rewrites files):
+
 ```bash
-npm run format
+pnpm run format
 ```
 
 **Check formatting** (exits non-zero if unformatted; used by CI and the pre-commit hook):
+
 ```bash
-npm run format:check
+pnpm run format:check
 ```
 
 ### Technical notes
@@ -142,7 +150,7 @@ npm run format:check
 4. **Push to main**: Push your changes to the `main` branch. The GitHub Actions workflow will automatically:
    - Run tests and verify that `manifest.json` and `package.json` versions match
    - Verify that the version exists in `versions.json`
-   - Build the plugin (runs `npm run build`)
+   - Build the plugin (runs `pnpm run build`)
    - Extract the version from the built `dist/manifest.json`
    - Create a git tag matching the version exactly (no `v` prefix) if it doesn't already exist
    - Create a GitHub release and upload `main.js`, `manifest.json`, and `styles.css` as release assets
@@ -165,4 +173,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with [SortableJS](https://sortablejs.github.io/Sortable/) for drag-and-drop functionality
 - Inspired by the need for better task management in Obsidian Bases
-

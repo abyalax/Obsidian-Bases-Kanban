@@ -315,6 +315,30 @@
 	margin: 0;
 }
 
+/* Tags styling */
+.obk-card-property-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	align-items: center;
+}
+
+.obk-card-property-tag {
+	background-color: var(--tag-background);
+	color: var(--tag-color);
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 0.8em;
+	display: inline-block;
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+/* Date styling */
+.obk-card-property-date {
+	color: var(--text-muted);
+}
+
 /* Drag and Drop States */
 .obk-card-dragging {
 	opacity: 0.5;
