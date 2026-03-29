@@ -1,0 +1,240 @@
+/* ── Card Detail Panel ─────────────────────────────────────────────────────── */
+/* Tambahkan ke styles.css existing                                              */
+
+/*
+ * Wrapper injects into app.workspace.containerEl — the root Obsidian workspace
+ * div. position:fixed here is relative to that container (which fills the
+ * window), so it behaves correctly regardless of which leaf is active.
+ */
+.obk-card-detail-wrapper {
+	position: fixed;
+	inset: 0;
+	pointer-events: none; /* wrapper itself is transparent to clicks */
+	z-index: 100;
+}
+
+/* Backdrop: invisible until panel opens */
+.obk-card-detail-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0);
+	transition: background 200ms ease;
+	pointer-events: none;
+}
+
+.obk-card-detail-backdrop.is-active {
+	background: rgba(0, 0, 0, 0.25);
+	pointer-events: all; /* capture clicks to close */
+}
+
+/* Panel shell */
+.obk-card-detail-panel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 380px;
+	max-width: 85vw;
+	background: var(--background-primary);
+	border-left: 1px solid var(--background-modifier-border);
+	box-shadow: -6px 0 24px rgba(0, 0, 0, 0.12);
+	display: flex;
+	flex-direction: column;
+	transform: translateX(100%);
+	transition: transform 220ms ease;
+	pointer-events: all; /* panel captures events */
+	overflow: hidden;
+}
+
+.obk-card-detail-panel.is-open {
+	transform: translateX(0);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+
+.obk-card-detail-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 14px 16px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	flex-shrink: 0;
+}
+
+.obk-card-detail-file-title {
+	flex: 1;
+	font-size: var(--font-ui-medium);
+	font-weight: 600;
+	color: var(--text-normal);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.obk-card-detail-actions {
+	display: flex;
+	gap: 4px;
+	flex-shrink: 0;
+}
+
+.obk-card-detail-btn,
+.obk-card-detail-close-btn {
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+	color: var(--text-muted);
+	transition: background 120ms ease, color 120ms ease;
+}
+
+.obk-card-detail-btn:hover,
+.obk-card-detail-close-btn:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+/* ── Scrollable body ─────────────────────────────────────────────────────────── */
+
+.obk-card-detail-body {
+	flex: 1;
+	overflow-y: auto;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.obk-card-detail-file-path {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+	font-family: var(--font-monospace);
+	word-break: break-all;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────────── */
+
+.obk-card-detail-section {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.obk-card-detail-section-title {
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--text-muted);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* ── Properties ──────────────────────────────────────────────────────────────── */
+
+.obk-card-detail-properties {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.obk-card-detail-property {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.obk-card-detail-property-label {
+	font-size: var(--font-ui-smaller);
+	font-weight: 500;
+	color: var(--text-muted);
+}
+
+/* Editable input for property values */
+.obk-card-detail-property-input {
+	width: 100%;
+	padding: 6px 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background: var(--background-primary);
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	transition: border-color 120ms ease;
+	box-sizing: border-box;
+}
+
+.obk-card-detail-property-input:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb, 100, 100, 255), 0.15);
+}
+
+/* ── Markdown section ────────────────────────────────────────────────────────── */
+
+.obk-card-detail-md-toggle {
+	font-size: var(--font-ui-smaller);
+	font-weight: 500;
+	color: var(--interactive-accent);
+	cursor: pointer;
+	text-transform: none;
+	letter-spacing: 0;
+}
+
+.obk-card-detail-md-toggle:hover {
+	text-decoration: underline;
+}
+
+.obk-card-detail-md-wrap {
+	display: flex;
+	flex-direction: column;
+}
+
+.obk-card-detail-textarea {
+	width: 100%;
+	min-height: 120px;
+	padding: 8px 10px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background: var(--background-primary);
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+	font-family: var(--font-monospace);
+	resize: none;
+	box-sizing: border-box;
+	transition: border-color 120ms ease;
+	line-height: 1.6;
+}
+
+.obk-card-detail-textarea:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+}
+
+.obk-card-detail-preview {
+	font-size: var(--font-ui-small);
+	line-height: 1.7;
+	color: var(--text-normal);
+}
+
+.obk-card-detail-preview p {
+	margin: 0 0 8px;
+}
+
+.obk-card-detail-preview a {
+	color: var(--link-color);
+	text-decoration: none;
+}
+
+/* ── Existing styles that can be removed ─────────────────────────────────────── */
+/*
+ * The following from the old styles.css are now superseded — you can delete them:
+ *   .obk-card-detail-panel { position: fixed; ... }    ← was wrong context
+ *   .obk-card-detail-backdrop { position: fixed; ... } ← was wrong context
+ *   .obk-card-detail-panel--open / --closed             ← replaced by .is-open/.is-active
+ *   .obk-card-detail-button                             ← replaced by action buttons in header
+ */
