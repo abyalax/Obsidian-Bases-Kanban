@@ -18,16 +18,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
       
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Check formatting
-        run: npm run format:check
+        run: pnpm run format
 
       - name: Verify versions are in sync
         run: |
@@ -60,10 +65,10 @@ jobs:
           echo "✅ Version $MANIFEST_VERSION found in versions.json"
       
       - name: Type check
-        run: npm run typecheck
+        run: pnpm run typecheck
       
       - name: Run tests
-        run: npm test
+        run: pnpm test
 
   build:
     needs: test
@@ -77,13 +82,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
       
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       
       - name: Build plugin
-        run: npm run build
+        run: pnpm run build
         env:
           NODE_ENV: production
       
